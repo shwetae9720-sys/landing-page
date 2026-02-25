@@ -89,20 +89,34 @@
     document.getElementById('leadForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const phone = e.target.phone.value;
-      if (!/^[0-9]{10}$/.test(phone)) {
-        document.getElementById('phone-error').textContent = 'Enter a valid 10-digit number';
-        return;
-      } else {
-        document.getElementById('phone-error').textContent = '';
-      }
+<label>Phone Number *</label>
+<div style="display: flex; gap: 8px; margin-bottom: 20px;">
+  <select name="country_code" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; width: 140px; background: white;">
+    <option value="+91">🇮🇳 +91</option>
+    <option value="+1">🇺🇸 +1</option>
+    <option value="+44">🇬🇧 +44</option>
+    <option value="+61">🇦🇺 +61</option>
+    <option value="+971">🇦🇪 +971</option>
+    <option value="+65">🇸🇬 +65</option>
+    <option value="+60">🇲🇾 +60</option>
+    <option value="+64">🇳🇿 +64</option>
+    <option value="+27">🇿🇦 +27</option>
+    <option value="+49">🇩🇪 +49</option>
+    <option value="+33">🇫🇷 +33</option>
+    <option value="+81">🇯🇵 +81</option>
+    <option value="+86">🇨🇳 +86</option>
+    <option value="+55">🇧🇷 +55</option>
+    <option value="+52">🇲🇽 +52</option>
+  </select>
+  <input type="tel" name="phone" placeholder="9876543210" required
+    style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px;">
+</div>
+<div class="error" id="phone-error"></div>
 
-      const data = {
-        name: e.target.name.value,
-        phone: phone,
-        email: e.target.email.value,
-        consent: e.target.consent.checked
-      };
+      const countryCode = e.target.country_code.value;
+const data = {
+  name: e.target.name.value,
+  phone: countryCode + e.target.phone.value,
 
       try {
         const res = await fetch('https://trialpack.app.n8n.cloud/webhook-test/07192e10-9314-46b4-8550-fd6f58838e57', {
