@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Your Free Resource</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 { color: #333; text-align: center; margin-bottom: 10px; font-size: 26px; }
+    p.sub { text-align: center; color: #666; margin-bottom: 30px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%; padding: 12px; border: 2px solid #ddd;
+      border-radius: 8px; font-size: 15px; margin-bottom: 20px;
+      transition: border 0.3s;
+    }
+    input:focus { border-color: #667eea; outline: none; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 25px; }
+    .consent input { margin-top: 3px; width: 18px; height: 18px; }
+    .consent label { font-weight: normal; color: #555; font-size: 14px; }
+    button {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white; border: none; border-radius: 8px;
+      font-size: 18px; font-weight: bold; cursor: pointer;
+    }
+    button:hover { opacity: 0.9; }
+    #thank-you { display: none; text-align: center; padding: 20px; }
+    #thank-you h2 { color: #667eea; font-size: 28px; margin-bottom: 15px; }
+    #thank-you p { color: #555; font-size: 16px; line-height: 1.6; }
+    .error { color: red; font-size: 13px; margin-top: -15px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <div id="form-section">
+      <h1>🎁 Get Your Free PDF</h1>
+      <p class="sub">Fill in below and we'll send it to your inbox instantly!</p>
+
+      <form id="leadForm">
+        <label>Your Name *</label>
+        <input type="text" name="name" placeholder="John Smith" required>
+
+        <label>Phone Number *</label>
+        <input type="tel" name="phone" placeholder="9876543210" required>
+        <div class="error" id="phone-error"></div>
+
+        <label>Email Address *</label>
+        <input type="email" name="email" placeholder="you@email.com" required>
+
+        <div class="consent">
+          <input type="checkbox" name="consent" id="consent" required>
+          <label for="consent">I agree to receive emails and communications from [Your Name]</label>
+        </div>
+
+        <button type="submit">Send Me The Free PDF ➜</button>
+      </form>
+    </div>
+
+    <div id="thank-you">
+      <h2>🎉 You're in!</h2>
+      <p>Check your inbox — your free PDF is on its way.<br><br>
+      Also check your <strong>spam/promotions</strong> folder just in case!</p>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('leadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const phone = e.target.phone.value;
+      if (!/^[0-9]{10}$/.test(phone)) {
+        document.getElementById('phone-error').textContent = 'Enter a valid 10-digit number';
+        return;
+      } else {
+        document.getElementById('phone-error').textContent = '';
+      }
+
+      const data = {
+        name: e.target.name.value,
+        phone: phone,
+        email: e.target.email.value,
+        consent: e.target.consent.checked
+      };
+
+      try {
+        const res = await fetch('PASTE_YOUR_N8N_WEBHOOK_URL_HERE', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          document.getElementById('form-section').style.display = 'none';
+          document.getElementById('thank-you').style.display = 'block';
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        alert('Network error. Check your connection.');
+      }
+    });
+  </script>
+</body>
+</html>
+```
